@@ -22,6 +22,7 @@ import pydantic
 import werkzeug.debug
 import werkzeug.exceptions
 import werkzeug.local
+import werkzeug.middleware.proxy_fix
 from authlib import jose
 from authlib.integrations.flask_oauth2.authorization_server import FlaskOAuth2Request
 from authlib.oauth2 import OAuth2Error, OAuth2Request
@@ -367,6 +368,8 @@ def init_app(
     app.debug = True
     app.wsgi_app = werkzeug.debug.DebuggedApplication(app.wsgi_app)
     app.wsgi_app.trusted_hosts.append("localhost")
+
+    app.wsgi_app = werkzeug.middleware.proxy_fix.ProxyFix(app.wsgi_app)
 
     app.config.from_prefixed_env()
 
