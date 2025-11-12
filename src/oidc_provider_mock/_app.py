@@ -368,6 +368,8 @@ def init_app(
     app.wsgi_app = werkzeug.debug.DebuggedApplication(app.wsgi_app)
     app.wsgi_app.trusted_hosts.append("localhost")
 
+    app.config.from_prefixed_env()
+
     return app
 
 
